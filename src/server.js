@@ -1,14 +1,22 @@
+"use strict";
+
+// Import this once per app!
+require("reflect-metadata");
+
 //module dependencies.
-var app = require("./app");
 var debug = require("debug")("express:server");
 var http = require("http");
+var container = require("./inversify.config");
+var TYPES = require("./types");
 
 //get port from environment and store in Express.
 var port = normalizePort(process.env.PORT || 3000);
-app.set("port", port);
+var server = container.get(TYPES.default.Server);
+
+server.expressApp.set("port", port);
 
 //create http server
-var server = http.createServer(app);
+var server = http.createServer(server.expressApp);
 
 //listen on provided ports
 server.listen(port);

@@ -1,31 +1,23 @@
-"use strict";
-
 import * as bodyParser from "body-parser";
 import * as express from "express";
-import * as quotesRoute from "./routes/quotes";
-import * as dataBase from "./dataBase";
+import {Quotes} from "./routes/quotes";
+import TYPES from "./types";
+import {inject} from "inversify";
+import {injectable} from "inversify";
+import {IDatabaseClient, IServer} from "./interfaces";
 
 /**
  * The server.
  *
  * @class Server
  */
-class Server {
 
-    public app: express.Application;
-    private databaseClient: dataBase.IDatabaseClient;
-    private quotes: quotesRoute.Quotes;
+@injectable()
+export class Server implements IServer {
 
-    /**
-     * Bootstrap the application.
-     *
-     * @class Server
-     * @method bootstrap
-     * @static
-     */
-    public static bootstrap(): Server {
-        return new Server();
-    }
+    public expressApp: express.Application;
+    private databaseClient: IDatabaseClient;
+    private quotes: Quotes;
 
     /**
      * Constructor.
@@ -33,12 +25,11 @@ class Server {
      * @class Server
      * @constructor
      */
-    constructor() {
-        // TODO Use DI
-        this.databaseClient = new dataBase.DatabaseClient();
+    constructor(@inject(TYPES.DatabaseClient) databaseClient: IDatabaseClient) {
+        this.databaseClient = databaseClient; // new dataBase.DatabaseClient();
 
         // TODO Use DI
-        this.app = express();
+        this.expressApp = express();
 
         //configure application
         this.config();
@@ -51,7 +42,7 @@ class Server {
      * Configure the application
      */
     private config() {
-        this.app.use(bodyParser.urlencoded({extended: true}));
+        this.expressApp.use(bodyParser.urlencoded({extended: true}));
 
         this.databaseClient.connect().then(() => {
             console.log('Database connection successful');
@@ -73,7 +64,7 @@ class Server {
         router = express.Router();
 
         //create routes
-        this.quotes = new quotesRoute.Quotes(this.databaseClient);
+        this.quotes = new Quotes(this.databaseClient);
 
         //get all
         router.get("/quotes", (req: express.Request, res: express.Response, next: express.NextFunction) => this.quotes.getAll(req, res, next));
@@ -82,8 +73,7 @@ class Server {
         router.post('/quotes', (req: express.Request, res: express.Response, next: express.NextFunction) => this.quotes.post(req, res, next));
 
         //use router middleware
-        this.app.use(router);
+        this.expressApp.use(router);
     }
 }
 
-export = Server.bootstrap().app;
