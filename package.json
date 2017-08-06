@@ -1,7 +1,7 @@
 {
   "name": "starwars",
   "version": "1.0.0",
-  "description": "A simple application made up of react, express and mongo",
+  "description": "A simple application made up of inversify, express and mongo",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
