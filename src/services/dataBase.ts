@@ -1,6 +1,6 @@
 import * as mongoClient from "mongodb";
 import {injectable} from "inversify";
-import {IDatabaseClient} from "./interfaces";
+import {IDatabaseClient} from "../interfaces";
 
 @injectable()
 export class DatabaseClient implements IDatabaseClient{

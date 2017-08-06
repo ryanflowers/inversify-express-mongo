@@ -1,7 +1,7 @@
 import { Container } from "inversify";
 import TYPES from "./types";
 import * as app from "./app";
-import * as dataBase from "./dataBase";
+import * as dataBase from "./services/dataBase";
 import {IDatabaseClient, IServer} from "./interfaces";
 
 /**
