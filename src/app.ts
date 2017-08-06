@@ -1,10 +1,9 @@
 import * as bodyParser from "body-parser";
 import * as express from "express";
-import {Quotes} from "./routes/quotes";
 import TYPES from "./types";
 import {inject} from "inversify";
 import {injectable} from "inversify";
-import {IDatabaseClient, IServer} from "./interfaces";
+import {IDatabaseClient, IServer, IQuotes} from "./interfaces";
 
 /**
  * The server.
@@ -17,7 +16,7 @@ export class Server implements IServer {
 
     public expressApp: express.Application;
     private databaseClient: IDatabaseClient;
-    private quotes: Quotes;
+    private quotes: IQuotes;
 
     /**
      * Constructor.
@@ -25,10 +24,12 @@ export class Server implements IServer {
      * @class Server
      * @constructor
      */
-    constructor(@inject(TYPES.DatabaseClient) databaseClient: IDatabaseClient) {
-        this.databaseClient = databaseClient; // new dataBase.DatabaseClient();
+    constructor(@inject(TYPES.DatabaseClient) databaseClient: IDatabaseClient,
+                @inject(TYPES.Quotes) quotes: IQuotes) {
 
-        // TODO Use DI
+        this.databaseClient = databaseClient;
+        this.quotes = quotes;
+
         this.expressApp = express();
 
         //configure application
@@ -62,9 +63,6 @@ export class Server implements IServer {
         //get router
         let router: express.Router;
         router = express.Router();
-
-        //create routes
-        this.quotes = new Quotes(this.databaseClient);
 
         //get all
         router.get("/quotes", (req: express.Request, res: express.Response, next: express.NextFunction) => this.quotes.getAll(req, res, next));

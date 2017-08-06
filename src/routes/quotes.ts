@@ -1,6 +1,9 @@
 import * as express from "express";
 import * as mongoDb from "mongodb";
-import {IDatabaseClient} from "../interfaces";
+import {IDatabaseClient, IQuotes} from "../interfaces";
+import TYPES from "../types";
+import {inject} from "inversify";
+import {injectable} from "inversify";
 
 interface DbObject {
     _id: mongoDb.ObjectID;
@@ -11,14 +14,15 @@ interface Quote extends DbObject{
     quote: string;
 }
 
-export class Quotes {
+@injectable()
+export class Quotes implements IQuotes {
     private databaseClient: IDatabaseClient;
 
-    public constructor(databaseClient: IDatabaseClient) {
+    public constructor(@inject(TYPES.DatabaseClient) databaseClient: IDatabaseClient) {
         this.databaseClient = databaseClient;
     }
 
-    public getAll(req: express.Request, res: express.Response, next: express.NextFunction) {
+    public getAll(req: express.Request, res: express.Response, next: express.NextFunction): void {
         this.databaseClient.collection('quotes').find().toArray(function(err: any, results: Quote[]) {
             console.log(results)
             res.send(results);

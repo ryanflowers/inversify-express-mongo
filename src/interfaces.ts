@@ -9,3 +9,8 @@ export interface IDatabaseClient {
 export interface IServer {
     expressApp: express.Application;
 }
+
+export interface IQuotes {
+    getAll(req: express.Request, res: express.Response, next: express.NextFunction): void;
+    post(req: express.Request, res: express.Response, next: express.NextFunction): Promise<any>;
+}

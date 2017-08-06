@@ -1,8 +1,9 @@
 import { Container } from "inversify";
 import TYPES from "./types";
-import * as app from "./app";
-import * as dataBase from "./services/dataBase";
-import {IDatabaseClient, IServer} from "./interfaces";
+import {Quotes} from "./routes/quotes";
+import {Server} from "./app";
+import {DatabaseClient} from "./services/dataBase";
+import {IDatabaseClient, IServer, IQuotes} from "./interfaces";
 
 /**
  * Inversion Of Control class container
@@ -14,8 +15,9 @@ class Kernel extends Container {
     }
 
     declareDependencies() {
-        this.bind<IDatabaseClient>(TYPES.DatabaseClient).to(dataBase.DatabaseClient);
-        this.bind<IServer>(TYPES.Server).to(app.Server);
+        this.bind<IDatabaseClient>(TYPES.DatabaseClient).to(DatabaseClient).inSingletonScope();
+        this.bind<IServer>(TYPES.Server).to(Server).inSingletonScope();
+        this.bind<IQuotes>(TYPES.Quotes).to(Quotes).inSingletonScope();
     }
 }
 
