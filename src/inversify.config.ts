@@ -16,8 +16,8 @@ class Kernel extends Container {
 
     declareDependencies() {
         this.bind<IDatabaseClient>(TYPES.DatabaseClient).to(DatabaseClient).inSingletonScope();
-        this.bind<IServer>(TYPES.Server).to(Server).inSingletonScope();
-        this.bind<IQuotes>(TYPES.Quotes).to(Quotes).inSingletonScope();
+        this.bind<IServer>(TYPES.Server).to(Server);
+        this.bind<IQuotes>(TYPES.Quotes).to(Quotes);
     }
 }
 
