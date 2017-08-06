@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ryanflowers/react-express-mongo.git"
+    "url": "git+https://github.com/ryanflowers/inversify-express-mongo.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ryanflowers/react-express-mongo/issues"
+    "url": "https://github.com/ryanflowers/inversify-express-mongo/issues"
   },
-  "homepage": "https://github.com/ryanflowers/react-express-mongo#readme",
+  "homepage": "https://github.com/ryanflowers/inversify-express-mongo#readme",
   "dependencies": {
     "body-parser": "1.17.2",
     "es6-symbol": "3.1.1",
