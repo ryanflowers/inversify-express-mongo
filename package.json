@@ -21,6 +21,7 @@
     "body-parser": "1.17.2",
     "es6-symbol": "3.1.1",
     "express": "4.15.3",
+    "gulp-clean": "^0.3.2",
     "inversify": "4.3.0",
     "mongodb": "2.2.30",
     "reflect-metadata": "0.1.10"

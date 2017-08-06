@@ -1,13 +1,14 @@
 var gulp = require('gulp');
 var typescript = require('gulp-typescript');
+var clean = require('gulp-clean');
 
-// TODO copy , 'src/**/*.js' over to build dir
+gulp.task('clean', function() {
+    return gulp.src('build/')
+         .pipe(clean());
+});
 
-gulp.task('build', function() {
-    gulp.src('build/')
-        .pipe(clean());
-
-    gulp.src('src/**/*.js', {cwd: bases.app})
+gulp.task('scripts', ['clean'], function() {
+    gulp.src('src/**/*.js')
         .pipe(gulp.dest('build/'));
 
     gulp.src(['src/**/*.ts'])
@@ -24,3 +25,5 @@ gulp.task('build', function() {
         }))
         .pipe(gulp.dest('build/'));
 });
+
+gulp.task('build', ['clean', 'scripts']);

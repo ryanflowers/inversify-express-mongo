@@ -1,5 +1,4 @@
 "use strict";
-
 // Import this once per app!
 require("reflect-metadata");
 
