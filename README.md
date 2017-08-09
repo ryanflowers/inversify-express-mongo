@@ -1,2 +1,2 @@
 # inversify-express-mongo
-A simple application made up of react, express and mongo
+A simple application made up of inversify, express and mongo
