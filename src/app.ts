@@ -43,7 +43,17 @@ export class Server implements IServer {
      * Configure the application
      */
     private config() {
-        this.expressApp.use(bodyParser.urlencoded({extended: true}));
+
+        var allowCrossDomain = (req: express.Request, res: express.Response, next: any) => {
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+            //res.header('Access-Control-Allow-Headers', 'Content-Type');
+
+            next();
+        }
+
+        this.expressApp.use(allowCrossDomain);
+        this.expressApp.use(bodyParser.json());
 
         this.databaseClient.connect().then(() => {
             console.log('Database connection successful');
