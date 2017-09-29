@@ -9,7 +9,7 @@ interface DbObject {
     _id: mongoDb.ObjectID;
 }
 
-interface Quote extends DbObject{
+interface Quote extends DbObject {
     author: string;
     quote: string;
 }
@@ -23,14 +23,14 @@ export class Quotes implements IQuotes {
     }
 
     public getAll(req: express.Request, res: express.Response, next: express.NextFunction): void {
-        this.databaseClient.collection('quotes').find().toArray(function(err: any, results: Quote[]) {
+        this.databaseClient.collection('quotes').find().toArray((err: any, results: Quote[]) => {
             console.log(results)
             res.send(results);
         });
     }
 
     public post(req: express.Request, res: express.Response, next: express.NextFunction): Promise<any> {
-        return this.databaseClient.collection('quotes').save(req.body).then((results: mongoDb.WriteOpResult) => {
+        return this.databaseClient.collection('quotes').insertOne(req.body).then((results: mongoDb.WriteOpResult) => {
             res.send(results);
             console.log(results)
         }, (error: any) => {
