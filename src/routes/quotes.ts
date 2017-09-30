@@ -30,8 +30,8 @@ export class Quotes implements IQuotes {
     }
 
     public post(req: express.Request, res: express.Response, next: express.NextFunction): Promise<any> {
-        return this.databaseClient.collection('quotes').insertOne(req.body).then((results: mongoDb.WriteOpResult) => {
-            res.send(results);
+        return this.databaseClient.collection('quotes').insertOne(req.body).then((results: mongoDb.InsertOneWriteOpResult) => {
+            res.send({ _id: results.insertedId.toString()});
             console.log(results)
         }, (error: any) => {
             console.error(error);
