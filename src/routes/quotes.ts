@@ -4,6 +4,7 @@ import {IDatabaseClient, IQuotes} from "../interfaces";
 import TYPES from "../types";
 import {inject} from "inversify";
 import {injectable} from "inversify";
+import {isNullOrUndefined} from "util";
 
 interface DbObject {
     _id: mongoDb.ObjectID;
@@ -29,8 +30,26 @@ export class Quotes implements IQuotes {
         });
     }
 
-    public post(req: express.Request, res: express.Response, next: express.NextFunction): Promise<any> {
-        return this.databaseClient.collection('quotes').insertOne(req.body).then((results: mongoDb.InsertOneWriteOpResult) => {
+    public delete(req: express.Request, res: express.Response, next: express.NextFunction): void {
+        let id = req.param("id");
+        if(!isNullOrUndefined(id)) {
+            this.databaseClient.collection('quotes').deleteOne({ _id: new mongoDb.ObjectID(id) }).then((results: mongoDb.DeleteWriteOpResultObject) => {
+                res.send(id);
+                console.log(results)
+            }, (error: any) => {
+                console.error(error);
+                res.status(500)
+                    .send('Error deleting quote');
+            });
+        } else {
+            res.status(404)
+                .send('Not found');
+        }
+
+    }
+
+    public post(req: express.Request, res: express.Response, next: express.NextFunction): void {
+        this.databaseClient.collection('quotes').insertOne(req.body).then((results: mongoDb.InsertOneWriteOpResult) => {
             res.send({ _id: results.insertedId.toString()});
             console.log(results)
         }, (error: any) => {

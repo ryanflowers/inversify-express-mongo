@@ -47,7 +47,7 @@ export class Server implements IServer {
         var allowCrossDomain = (req: express.Request, res: express.Response, next: any) => {
             res.setHeader('Access-Control-Allow-Origin', '*');
             res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-            res.header('Access-Control-Allow-Headers', 'Content-Type');
+            res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
             res.setHeader('Content-Type', 'application/json');
 
             if (req.method === 'OPTIONS') {
@@ -84,6 +84,9 @@ export class Server implements IServer {
 
         //post
         router.post('/quotes', (req: express.Request, res: express.Response, next: express.NextFunction) => this.quotes.post(req, res, next));
+
+        //delete
+        router.delete('/quotes', (req: express.Request, res: express.Response, next: express.NextFunction) => this.quotes.delete(req, res, next));
 
         //use router middleware
         this.expressApp.use(router);
